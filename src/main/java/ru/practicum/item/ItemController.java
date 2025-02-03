@@ -40,7 +40,7 @@ public class ItemController {
         return itemService.getOwnerItems(userId);
     }
 
-    @GetMapping("/search?text={text}")
+    @GetMapping("/search")
     public List<ItemDto> itemSearch(@RequestParam String text) {
         return itemService.itemSearch(text);
     }

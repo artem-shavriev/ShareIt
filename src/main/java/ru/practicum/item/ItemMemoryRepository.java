@@ -6,8 +6,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import ru.practicum.service.IdGenerator;
+import ru.practicum.user.UserMemoryRepository;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,16 +19,35 @@ import java.util.Map;
 @Repository
 public class ItemMemoryRepository {
     private final ItemMapper itemMapper;
+    private final UserMemoryRepository userMemoryRepository;
     private final IdGenerator idGenerator;
     Map<Integer, Item> itemsMap = new HashMap<>();
 
     public ItemDto addItem(ItemDto itemDtoRequest, Integer userId) {
-       Item item = itemMapper.mapToItem(itemDtoRequest);
-       item.setOwner(userId);
-       item.setItemId(idGenerator.getNextId(itemsMap));
 
-       log.info("Предмет добавлен пользователем с id {}.", userId);
-       return itemMapper.mapToItemDto(item);
+        if (itemDtoRequest.getAvailable() == null) {
+            throw new ValidationException("Поле доступности не должно быть null");
+        }
+
+        if (itemDtoRequest.getName() == null || itemDtoRequest.getName().isBlank()) {
+            throw new ValidationException("Item name не должно быть null");
+        }
+
+        if (itemDtoRequest.getDescription() == null || itemDtoRequest.getDescription().isBlank()) {
+            throw new ValidationException("Item name не должно быть null");
+        }
+
+        if (userMemoryRepository.getUserById(userId) == null) {
+            throw new NotFoundException("Пользовтель с данным id не найден.");
+        }
+
+        Item item = itemMapper.mapToItem(itemDtoRequest);
+        item.setOwner(userId);
+        item.setId(idGenerator.getNextId(itemsMap));
+        itemsMap.put(item.getId(), item);
+
+        log.info("Предмет c id {} добавлен пользователем с id {}.", item.getId(), userId);
+        return itemMapper.mapToItemDto(item);
     }
 
     public ItemDto updateItem(Integer itemId, ItemDto itemDtoRequest, Integer userId) {
@@ -38,7 +59,7 @@ public class ItemMemoryRepository {
         Integer itemsOwnerId = itemsMap.get(itemId).getOwner();
         if (itemsOwnerId != userId) {
             log.error("Id польльзователя: {} не совпадает с id владельца: {} изменяемой вещи.", userId, itemsOwnerId);
-            throw new ValidationException("Вносить изменения может только владелец вещи.");
+            throw new NotFoundException("Вносить изменения может только владелец вещи.");
         }
 
         Item updatedItem = new Item();
@@ -64,7 +85,7 @@ public class ItemMemoryRepository {
     }
 
     public List<ItemDto> getOwnerItems(Integer ownerId) {
-        List<Item> allItems = (List<Item>) itemsMap.values();
+        Collection<Item> allItems = itemsMap.values();
         List<ItemDto> ownerItemsList = new ArrayList<>();
 
         allItems.forEach(item -> {
@@ -74,7 +95,7 @@ public class ItemMemoryRepository {
         });
 
         if (ownerItemsList.isEmpty()) {
-            log.error("Вещи пользователя c id {} не найдены.",  ownerId);
+            log.error("Вещи пользователя c id {} не найдены.", ownerId);
             throw new NotFoundException("Вещи пользователя не найдены.");
         }
 
@@ -83,20 +104,23 @@ public class ItemMemoryRepository {
     }
 
     public List<ItemDto> itemSearch(String text) {
-        List<Item> allItems = (List<Item>) itemsMap.values();
+        Collection<Item> allItems = itemsMap.values();
         List<ItemDto> searchItems = new ArrayList<>();
-
         allItems.forEach(item -> {
-            if ((item.getName().contains(text) || item.getDescription().contains(text))
-                    && item.getAvailable().equals(Status.AVAILABLE)) {
-                searchItems.add(itemMapper.mapToItemDto(item));
+            if (item.getName() != null) {
+
+                if ((item.getName().toLowerCase().contains(text.toLowerCase())
+                        && item.getAvailable().equals(true))) {
+                    searchItems.add(itemMapper.mapToItemDto(item));
+                }
+            }
+
+            if (item.getDescription() != null) {
+                if (item.getDescription().toLowerCase().contains(text.toLowerCase())) {
+                    searchItems.add(itemMapper.mapToItemDto(item));
+                }
             }
         });
-
-        if (searchItems.isEmpty()) {
-            log.error("Вещь не найдена или не доступна.");
-            throw new NotFoundException("Вещь не найдена или не доступна.");
-        }
 
         log.info("Вещь найдена.");
         return searchItems;

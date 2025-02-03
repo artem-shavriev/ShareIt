@@ -1,6 +1,7 @@
 package ru.practicum.user;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,12 +30,17 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public UserDto getUserById(Integer userId) {
+    public UserDto getUserById(@PathVariable Integer userId) {
         return userService.getUserById(userId);
     }
 
     @PatchMapping("/{userId}")
     public UserDto updateUser(@RequestBody UserDto user, @PathVariable Integer userId) {
         return userService.updateUser(user, userId);
+    }
+
+    @DeleteMapping("/{userId}")
+    public UserDto deleteUser(@PathVariable Integer userId) {
+        return userService.deleteUser(userId);
     }
 }

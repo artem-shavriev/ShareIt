@@ -29,4 +29,9 @@ public class UserServiceImpl implements UserService {
     public UserDto updateUser(UserDto userDtoRequest, Integer userId) {
         return userMemoryRepository.updateUser(userDtoRequest, userId);
     }
+
+    @Override
+    public UserDto deleteUser(Integer userId) {
+        return userMemoryRepository.deleteUser(userId);
+    }
 }

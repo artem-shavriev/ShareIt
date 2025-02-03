@@ -36,7 +36,7 @@ public class UserMemoryRepository {
 
         usersMap.put(user.getId(), user);
         log.info("Пользователь с id " + user.getId() + " добавлен");
-        return userDtoRequest;
+        return userMapper.mapToUserDto(user);
     }
 
     public List<UserDto> getUsers() {
@@ -55,13 +55,26 @@ public class UserMemoryRepository {
             throw new RuntimeException("Пользовтеь с id " + userId + " не найден.");
         }
 
-        emailValidator(userDtoRequest.getEmail());
+        String email = userDtoRequest.getEmail();
 
-        User user = userMapper.mapToUser(userDtoRequest);
+        if (email != null) {
+            emailValidator(userDtoRequest.getEmail());
+        }
+
+        User user = usersMap.get(userId);
+
+        user = userMapper.updateUserFields(user, userDtoRequest);
+
         usersMap.put(userId, user);
         log.info("Пользователь с id {} обновлен", userId);
 
-        return userDtoRequest;
+        return userMapper.mapToUserDto(user);
+    }
+
+    public UserDto deleteUser(Integer userId) {
+        UserDto user = userMapper.mapToUserDto(usersMap.get(userId));
+        usersMap.remove(userId);
+        return  user;
     }
 
     public void emailValidator(String email) {

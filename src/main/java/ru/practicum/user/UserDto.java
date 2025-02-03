@@ -8,6 +8,13 @@ import lombok.Setter;
 public class UserDto {
     private Integer id;
     private String name;
-    private String login;
     private String email;
+
+    public boolean hasEmail() {
+        return email != null && !email.isEmpty();
+    }
+
+    public boolean hasName() {
+        return name != null && !name.isEmpty();
+    }
 }

@@ -3,11 +3,13 @@ package ru.practicum.user;
 import java.util.List;
 
 public interface UserService {
-    public UserDto addUser(UserDto userDtoRequest);
+    UserDto addUser(UserDto userDtoRequest);
 
-    public List<UserDto> getUsers();
+    List<UserDto> getUsers();
 
-    public UserDto updateUser(UserDto userDtoRequest, Integer userId);
+    UserDto updateUser(UserDto userDtoRequest, Integer userId);
 
-    public UserDto getUserById(Integer userId);
+    UserDto getUserById(Integer userId);
+
+    UserDto deleteUser(Integer userId);
 }
