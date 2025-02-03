@@ -1,4 +1,4 @@
-package user;
+package ru.practicum.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,8 +10,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class User {
-    Integer userId;
-    String userName;
-    String login;
-    String email;
+    private Integer id;
+    private String name;
+    private String login;
+    private String email;
 }

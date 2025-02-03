@@ -1,11 +1,14 @@
-package user;
+package ru.practicum.user;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class UserMapper {
     public UserDto mapToUserDto(User user) {
         UserDto userDto = new UserDto();
 
-        user.setUserId(user.getUserId());
-        userDto.setUserName(user.getUserName());
+        user.setId(user.getId());
+        userDto.setName(user.getName());
         userDto.setLogin(user.getLogin());
         userDto.setEmail(user.getEmail());
 
@@ -15,8 +18,8 @@ public class UserMapper {
     public User mapToUser(UserDto userDto) {
         User user = new User();
 
-        user.setUserId(user.getUserId());
-        user.setUserName(userDto.getUserName());
+        user.setId(user.getId());
+        user.setName(userDto.getName());
         user.setLogin(userDto.getLogin());
         user.setEmail(userDto.getEmail());
 
