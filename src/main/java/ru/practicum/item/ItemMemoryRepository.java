@@ -104,25 +104,31 @@ public class ItemMemoryRepository {
     }
 
     public List<ItemDto> itemSearch(String text) {
-        Collection<Item> allItems = itemsMap.values();
         List<ItemDto> searchItems = new ArrayList<>();
-        allItems.forEach(item -> {
-            if (item.getName() != null) {
+        if (text != null && !text.isBlank()) {
 
-                if ((item.getName().toLowerCase().contains(text.toLowerCase())
-                        && item.getAvailable().equals(true))) {
-                    searchItems.add(itemMapper.mapToItemDto(item));
+            Collection<Item> allItems = itemsMap.values();
+
+            allItems.forEach(item -> {
+                if (item.getName() != null && item.getAvailable() != null && item.getAvailable().equals(true)) {
+                    if ((item.getName().toLowerCase().contains(text.toLowerCase()))) {
+                        searchItems.add(itemMapper.mapToItemDto(item));
+                        log.info("Вещь найдена по названию. Название вещи: {}, текст поиска: {}, id: {}",
+                                item.getName(), text, item.getId());
+                    }
                 }
-            }
 
-            if (item.getDescription() != null) {
-                if (item.getDescription().toLowerCase().contains(text.toLowerCase())) {
-                    searchItems.add(itemMapper.mapToItemDto(item));
+                if (item.getDescription() != null && item.getAvailable() != null && item.getAvailable().equals(true)) {
+                    if (item.getDescription().toLowerCase().contains(text.toLowerCase())) {
+                        searchItems.add(itemMapper.mapToItemDto(item));
+                        log.info("Вещь найдена по описанию. Описанию: {}, текст поиска {}, id {}",
+                                item.getDescription(), text, item.getId());
+                    }
                 }
-            }
-        });
+            });
 
-        log.info("Вещь найдена.");
+            System.out.println("текст: " + text);
+        }
         return searchItems;
     }
 }
