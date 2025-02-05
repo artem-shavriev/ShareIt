@@ -1,4 +1,4 @@
-package ru.practicum.item;
+package ru.practicum.shareit.request;
 
 public enum Status {
     WAITING,

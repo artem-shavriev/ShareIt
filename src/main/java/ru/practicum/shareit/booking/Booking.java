@@ -1,10 +1,10 @@
-package ru.practicum.booking;
+package ru.practicum.shareit.booking;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.practicum.item.Status;
+import ru.practicum.shareit.request.Status;
 
 import java.time.LocalDateTime;
 

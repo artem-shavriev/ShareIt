@@ -1,16 +1,16 @@
-package ru.practicum.item;
+package ru.practicum.shareit.item;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.practicum.request.ItemRequest;
+import ru.practicum.shareit.request.ItemRequest;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class ItemDto {
+public class Item {
     private Integer id;
     private Integer owner;
     private String name;

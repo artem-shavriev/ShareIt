@@ -1,7 +1,7 @@
-package ru.practicum.user;
+package ru.practicum.shareit.user;
 
 import org.springframework.stereotype.Component;
-import ru.practicum.exception.NotFoundException;
+import ru.practicum.shareit.exception.NotFoundException;
 
 @Component
 public class UserMapper {

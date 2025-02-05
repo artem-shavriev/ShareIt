@@ -1,4 +1,4 @@
-package ru.practicum.service;
+package ru.practicum.shareit.service;
 
 import org.springframework.stereotype.Component;
 

@@ -1,12 +1,12 @@
-package ru.practicum.item;
+package ru.practicum.shareit.item;
 
-import ru.practicum.exception.NotFoundException;
-import ru.practicum.exception.ValidationException;
+import ru.practicum.shareit.exception.NotFoundException;
+import ru.practicum.shareit.exception.ValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
-import ru.practicum.service.IdGenerator;
-import ru.practicum.user.UserMemoryRepository;
+import ru.practicum.shareit.service.IdGenerator;
+import ru.practicum.shareit.user.UserMemoryRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;

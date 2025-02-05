@@ -1,11 +1,11 @@
-package ru.practicum.user;
+package ru.practicum.shareit.user;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
-import ru.practicum.exception.DuplicatedDataException;
-import ru.practicum.exception.ValidationException;
-import ru.practicum.service.IdGenerator;
+import ru.practicum.shareit.exception.DuplicatedDataException;
+import ru.practicum.shareit.exception.ValidationException;
+import ru.practicum.shareit.service.IdGenerator;
 
 import java.util.Collection;
 import java.util.HashMap;
